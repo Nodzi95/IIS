@@ -24,6 +24,9 @@
 	if(!isset($_GET["menu"])){
 		$_GET["menu"] = 0;	
 	}
+	if(!isset($_GET["z"])){
+		$_GET["z"] = 0;	
+	}
 	/*$var = "2016-11-23";
 	if(new DateTime() >= new DateTime($var)) echo $var;*/
 	if(isset($_POST["name"]) and isset($_POST["pass"]) and $_POST["name"]!= ""){
@@ -48,7 +51,7 @@
 				$_GET["menu"] = 0;
 			}
 			else{
-				?>wrong login or password<?
+				?><script>alert("Spatne zadany login nebo heslo");</script><?
 			}
 		}
 	}
@@ -81,8 +84,12 @@
 		}
 	}
 
-
+	
 ?>
+
+<footer>
+	Povinne pole jsou oznaceny *
+</footer>
 
 </BODY>
 </HTML>

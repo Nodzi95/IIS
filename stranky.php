@@ -1,12 +1,16 @@
 <?
+/*TODO 	- kapacita letadla
+	- zakazat planovat lety do minulosti
+	- zakazat stornovat lety z minulosti
+*/
 function main($menu, $conn){
 ?>	<div>
 		<ul>
-			<li <?if($menu==0)?>><a href="?menu=0">Domů</a></li>
-			<li <?if($menu==1)?>><a href="?menu=1">Letenky</a></li>
-			<li <?if($menu==2)?>><a href="?menu=2">Kontakt</a></li>
-			<li <?if($menu==3)?>><a href="?menu=3">Přihlásit</a></li>
-			<li <?if($menu==4)?>><a href="?menu=4">Registrovat</a></li>		
+			<li><a href="?menu=0">Domů</a></li>
+			<li><a href="?menu=1">Letenky</a></li>
+			<li><a href="?menu=2">Kontakt</a></li>
+			<li><a href="?menu=3">Přihlásit</a></li>
+			<li><a href="?menu=4">Registrovat</a></li>		
 		</ul>
 	</div>
 
@@ -57,13 +61,17 @@ switch($menu){
 			<tbody>
 			<form method="POST"><div>
 				<tr><td><div>Registrace</div></td></tr>
-				<tr><td><div><label>Login:</label></td><td><input type="text" name="rlogin"/></div></td></tr>
-				<tr><td><div><label>Heslo:</label></td><td><input type="password" name="rpass"/></div></td></tr>
-				<tr><td><div><label>Jméno:</label></td><td><input type="text" name="rjmeno"/></div></td></tr>
-				<tr><td><div><label>Příjmení:</label></td><td><input type="text" name="rprijmeni"/></div></td></tr>
-				<tr><td><div><label>Narozeni:</label></td><td><input type="date" name="rnaroz"/></div></td></tr>
-				<tr><td><div><label>Pas:</label></td><td><input type="text" name="rpas"/></div></td></tr>
-				<tr><td></td><td><input type="submit" value="registrovat"/></td></tr>
+				<tr><td><div><label>*Login:</label></td><td><input type="text" name="rlogin" value="<?php if(isset($_POST["rlogin"])) echo $_POST["rlogin"];?>"/></div></td></tr>
+				<tr><td><div><label>*Heslo:</label></td><td><input type="password" name="rpass" value="<?php if(isset($_POST["rpass"])) echo $_POST["rpass"];?>"/></div></td></tr>
+				<tr><td><div><label>Jméno:</label></td><td><input type="text" name="rjmeno" value="<?php if(isset($_POST["rjmeno"])) echo $_POST["rjmeno"];?>"/></div></td></tr>
+				<tr><td><div><label>Příjmení:</label></td><td><input type="text" name="rprijmeni" value="<?php if(isset($_POST["rprijmeni"])) echo $_POST["rprijmeni"];?>"/></div></td></tr>
+				<tr><td><div><label>Narozeni:</label></td><td><input type="date" name="rnaroz" value="<?php if(isset($_POST["rnaroz"])) echo $_POST["rnaroz"];?>"/></div></td></tr>
+				<tr><td><div><label>Pas:</label></td><td><input type="text" name="rpas" value="<?php if(isset($_POST["rpas"])){
+						if(is_numeric($_POST["rpas"])){
+							echo $_POST["rpas"];
+						}
+				}?>"/></div></td></tr>
+				<tr><td></td><td><input type="submit" name="regZ" value="registrovat"/></td></tr>
 			</div></form>
 			</tbody>
 			</table>
@@ -71,11 +79,6 @@ switch($menu){
 	<?break;
 
 }
-
-
-
-
-
 }
 
 
@@ -85,8 +88,10 @@ function zakaz($menu,$conn){
 		<ul>
 			<li><a href="?menu=1">Odhlasit</a></li>
 			<li><a href="?menu=0">Domu</a></li>
+			<li><a href="?menu=4">Ucet</a></li>
 			<li><a href="?menu=2">Moje letenky</a></li>
-			<li><a href="?menu=3">Vyhledat let</a></li>		
+			<li><a href="?menu=3">Vyhledat let</a></li>	
+				
 		</ul>
 	</div>
 
@@ -149,6 +154,30 @@ function zakaz($menu,$conn){
 		echo "</tbody>";
 		echo "</table>";
 		break;
+
+		case 4:
+		/*if(isset($_GET["z"])){
+			if($_GET["z"] == 99){
+				?><script>alert("Vase udaje byly zmeneny");</script><?
+			}
+		}*/
+		$query="SELECT * FROM cestujici WHERE ID='".$_SESSION["login"]."'";
+		$res=mysql_query($query,$conn);
+		$data=mysql_fetch_array($res);
+		echo "<table border='0'>";
+		echo "<tbody>";
+			?><form method="post">
+				<tr><td>Jmeno: </td><td><input type="text" name="jmenoZE" value="<?php echo $data["jmeno"]?>"></td></tr>
+				<tr><td>Prijmeni: </td><td><input type="text" name="prijmeniZE" value="<?php echo $data["prijmeni"]?>"></td></tr>
+				<tr><td>*Login: </td><td><input type="text" name="loginZE" value="<?php echo $data["login"]?>"></td></tr>
+				<tr><td>*Heslo: </td><td><input type="password" name="passZE" value="<?php echo $data["pass"]?>"></td></tr>
+				<tr><td>Pas: </td><td><input type="text" name="pasZE" value="<?php echo $data["cislo_pasu"]?>"></td></tr>
+				<tr><td><input type="submit" name="editZ" value="Editovat"></td>
+				<td><input type="submit" name="deleteZ" value="Smazat ucet"></td></tr>
+			</form><?
+		echo "</tbody>";
+		echo "</table>";
+		break;
 	}
 }
 
@@ -157,6 +186,7 @@ function admin($menu, $conn){
 		<ul>
 			<li><a href="?menu=1">Odhlasit</a></li>	
 			<li><a href="?menu=0">Domu</a></li>
+			<li><a href="?menu=10">Ucet</a></li>
 			<li><a href="?menu=3">Vytvorit zamestnance</a></li>
 			<li><a href="?menu=2">Smazat zamestnance</a></li>
 			<li><a href="?menu=4">Vytvorit terminal</a></li>
@@ -176,11 +206,11 @@ function admin($menu, $conn){
 			<tbody>
 			<form method="POST"><div>
 				<tr><td><div>Registrace</div></td></tr>
-				<tr><td><div><label>Login:</label></td><td><input type="text" name="zlogin"/></div></td></tr>
-				<tr><td><div><label>Heslo:</label></td><td><input type="password" name="zpass"/></div></td></tr>
-				<tr><td><div><label>Jméno:</label></td><td><input type="text" name="zjmeno"/></div></td></tr>
-				<tr><td><div><label>Příjmení:</label></td><td><input type="text" name="zprijmeni"/></div></td></tr>
-				<tr><td></td><td><input type="submit" value="Vytvorit"/></td></tr>
+				<tr><td><div><label>*Login:</label></td><td><input type="text" name="zlogin" value="<?php if(isset($_POST["zlogin"])) echo $_POST["zlogin"];?>"/></div></td></tr>
+				<tr><td><div><label>*Heslo:</label></td><td><input type="password" name="zpass" value="<?php if(isset($_POST["zpass"])) echo $_POST["zpass"];?>"/></div></td></tr>
+				<tr><td><div><label>Jméno:</label></td><td><input type="text" name="zjmeno" value="<?php if(isset($_POST["zjmeno"])) echo $_POST["zjmeno"];?>"/></div></td></tr>
+				<tr><td><div><label>Příjmení:</label></td><td><input type="text" name="zprijmeni" value="<?php if(isset($_POST["zprijmeni"])) echo $_POST["zprijmeni"];?>"/></div></td></tr>
+				<tr><td></td><td><input type="submit" name="regP" value="Vytvorit"/></td></tr>
 			</div></form>
 			</tbody>
 			</table>
@@ -198,7 +228,7 @@ function admin($menu, $conn){
 					<div>
 						<tr><td>Jmeno: <?echo $data["jmeno"];?></td>
 						<td>Prijmeni: <?echo $data["prijmeni"];?></td>
-						<td>login: <?echo $data["login"];?></td>
+						<td>Login: <?echo $data["login"];?></td>
 						<td><input type="hidden" name="hidden_ID" value="<?php echo $data["ID"];?>">
 						<td><input type="submit" name="removeZ" value="Odstranit"></td></tr>
 					</div>
@@ -223,8 +253,8 @@ function admin($menu, $conn){
 			<tbody>
 			<form method="POST"><div>
 				<tr><td><div>Vytvorit terminal</div></td></tr>
-				<tr><td><div><label>Nazev:</label></td><td><input type="text" name="tnazev"/></div></td></tr>
-				<tr><td></td><td><input type="submit" value="Vytvorit"/></td></tr>
+				<tr><td><div><label>*Nazev:</label></td><td><input type="text" name="tnazev"/></div></td></tr>
+				<tr><td></td><td><input type="submit" name="term" value="Vytvorit"/></td></tr>
 			</div></form>
 			</tbody>
 			</table>
@@ -262,8 +292,8 @@ function admin($menu, $conn){
 			<tbody>
 			<form method="POST"><div>
 				<tr><td><div>Vytvorit branu</div></td></tr>
-				<tr><td><div><label>Nazev:</label></td><td><input type="text" name="goznaceni"/></div></td></tr>
-				<tr><td><div><label>Terminal:</label></td><td>
+				<tr><td><div><label>*Nazev:</label></td><td><input type="text" name="goznaceni" value="<?php if(isset($_POST["goznaceni"])) echo $_POST["goznaceni"];?>"/></div></td></tr>
+				<tr><td><div><label>*Terminal:</label></td><td>
 				<?
 				echo "<select name='terminal'>";
 				foreach($opt as $key => $value){
@@ -275,7 +305,7 @@ function admin($menu, $conn){
 				//print_r($opt);
 				?>
 				</div></td></tr>
-				<tr><td></td><td><input type="submit" value="Vytvorit"/></td></tr>
+				<tr><td></td><td><input type="submit" name="gate" value="Vytvorit"/></td></tr>
 			</div></form>
 			</tbody>
 			</table>
@@ -313,8 +343,8 @@ function admin($menu, $conn){
 			<tbody>
 			<form method="POST"><div>
 				<tr><td><div>Vytvorit letadlo</div></td></tr>
-				<tr><td><div><label>Oznaceni:</label></td><td><input type="text" name="loznaceni"/></div></td></tr>
-				<tr><td><div><label>Typ:</label></td><td>
+				<tr><td><div><label>*Oznaceni:</label></td><td><input type="text" name="loznaceni"/></div></td></tr>
+				<tr><td><div><label>*Typ:</label></td><td>
 				<?
 				echo "<select name='typ'>";
 				foreach($opt as $key => $value){
@@ -326,8 +356,8 @@ function admin($menu, $conn){
 				//print_r($opt);
 				?>
 				</div></td></tr>
-				<tr><td><div><label>Vyrobce:</label></td><td><input type="text" name="lvyrobce"/></div></td></tr>
-				<tr><td></td><td><input type="submit" value="Vytvorit"/></td></tr>
+				<tr><td><div><label>Vyrobce:</label></td><td><input type="text" name="lvyrobce" value="<?php if(isset($_POST["lvyrobce"])) echo $_POST["lvyrobce"];?>"/></div></td></tr>
+				<tr><td></td><td><input type="submit" name="letadlo" value="Vytvorit"/></td></tr>
 			</div></form>
 			</tbody>
 			</table>
@@ -355,7 +385,24 @@ function admin($menu, $conn){
 		echo "</table>";
 		break;	
 
-			
+		case 10:
+
+		$query="SELECT * FROM cestujici WHERE ID='".$_SESSION["admin"]."'";
+		$res=mysql_query($query,$conn);
+		$data=mysql_fetch_array($res);
+		echo "<table border='0'>";
+		echo "<tbody>";
+			?><form method="post">
+				<tr><td>Jmeno: </td><td><input type="text" name="jmenoA" value="<?php echo $data["jmeno"]?>"></td></tr>
+				<tr><td>Prijmeni: </td><td><input type="text" name="prijmeniA" value="<?php echo $data["prijmeni"]?>"></td></tr>
+				<tr><td>*Login: </td><td><input type="text" name="loginA" value="<?php echo $data["login"]?>"></td></tr>
+				<tr><td>*Heslo: </td><td><input type="password" name="passA" value="<?php echo $data["pass"]?>"></td></tr>
+				<tr><td><input type="submit" name="editA" value="Editovat"></td>
+				<td><input type="submit" name="deleteA" value="Smazat ucet"></td></tr>
+			</form><?
+		echo "</tbody>";
+		echo "</table>";
+		break;	
 	}
 
 }
@@ -365,10 +412,9 @@ function zam($menu, $conn){
 		<ul>
 			<li><a href="?menu=1">Odhlasit</a></li>	
 			<li><a href="?menu=0">Domu</a></li>
+			<li><a href="?menu=6">Ucet</a></li>
 			<li><a href="?menu=2">Vytvorit let</a></li>
 			<li><a href="?menu=3">Smazat let</a></li>
-			<li><a href="?menu=4">Vytvorit letenky</a></li>
-			<li><a href="?menu=5">Smazat letenky</a></li>
 
 		</ul>
 	</div><?
@@ -397,9 +443,9 @@ function zam($menu, $conn){
 			<tbody>
 			<form method="POST"><div>
 				<tr><td><div>Vytvorit let</div></td></tr>
-				<tr><td><div><label>Oznaceni:</label></td><td>
+				<tr><td><div><label>*Oznaceni:</label></td><td>
 				<?
-				echo "<select name='letadlo'>";
+				echo "<select name='letadlo1'>";
 				foreach($opt as $key => $value){
 					echo "<option value='$value[0]'";
 					echo ">$value[1]</option>\n";
@@ -407,11 +453,11 @@ function zam($menu, $conn){
 				echo "</select>\n";
 				?>
 				</div></td></tr>
-				<tr><td><div><label>Z:</label></td><td><input type="text" name="LEz"/></div></td></tr>
-				<tr><td><div><label>Kam:</label></td><td><input type="text" name="LEkam"/></div></td></tr>
-				<tr><td><div><label>Gate:</label></td><td>
+				<tr><td><div><label>*Z:</label></td><td><input type="text" name="LEz" value="<?php if(isset($_POST["LEz"])) echo $_POST["LEz"];?>"/></div></td></tr>
+				<tr><td><div><label>*Kam:</label></td><td><input type="text" name="LEkam" value="<?php if(isset($_POST["LEkam"])) echo $_POST["LEkam"];?>"/></div></td></tr>
+				<tr><td><div><label>*Gate:</label></td><td>
 				<?
-				echo "<select name='gate'>";
+				echo "<select name='gate1'>";
 				foreach($opt1 as $key => $value){
 					echo "<option value='$value[0]'";
 					echo ">$value[1]</option>\n";
@@ -419,9 +465,9 @@ function zam($menu, $conn){
 				echo "</select>\n";
 				?>
 				</div></td></tr>
-				<tr><td><div><label>Delka letu:</label></td><td><input type="text" name="LEdelka"/></div></td></tr>
-				<tr><td><div><label>Datum letu:</label></td><td><input type="date" name="LEdate" value ="<? echo date("Y-m-d") ?>"/></div></td></tr>
-				<tr><td></td><td><input type="submit" value="Vytvorit"/></td></tr>
+				<tr><td><div><label>Delka letu:</label></td><td><input type="text" name="LEdelka" value="<?php if(isset($_POST["LEdelka"])) echo $_POST["LEdelka"];?>"/></div></td></tr>
+				<tr><td><div><label>*Datum letu:</label></td><td><input type="date" name="LEdate" value ="<? echo date("Y-m-d") ?>"/></div></td></tr>
+				<tr><td></td><td><input type="submit" name="letka" value="Vytvorit"/></td></tr>
 			</div></form>
 			</tbody>
 			</table>
@@ -451,6 +497,23 @@ function zam($menu, $conn){
 		echo "</tbody>";
 		echo "</table>";
 		break;	
+		
+		case 6:
+		$query="SELECT * FROM cestujici WHERE ID='".$_SESSION["zam"]."'";
+		$res=mysql_query($query,$conn);
+		$data=mysql_fetch_array($res);
+		echo "<table border='0'>";
+		echo "<tbody>";
+			?><form method="post">
+				<tr><td>Jmeno: </td><td><input type="text" name="jmenoE" value="<?php echo $data["jmeno"]?>"></td></tr>
+				<tr><td>Prijmeni: </td><td><input type="text" name="prijmeniE" value="<?php echo $data["prijmeni"]?>"></td></tr>
+				<tr><td>Login: </td><td><input type="text" name="loginE" value="<?php echo $data["login"]?>"></td></tr>
+				<tr><td>Heslo: </td><td><input type="password" name="passE" value="<?php echo $data["pass"]?>"></td></tr>
+				<tr><td><input type="submit" name="editP" value="Editovat"></td>
+				<td><input type="submit" name="deleteP" value="Smazat ucet"></td></tr>
+			</form><?
+		echo "</tbody>";
+		echo "</table>";
 	}
 }
 
