@@ -16,9 +16,14 @@ if(isset($_POST['ukaz_zakazniky'])){
 }
 //smazani letenky
 if(isset($_GET['storno'])){
+	$mista = (int)$_GET["hidden_mista"];
 	if(isset($_GET['hidden_lID'])){
 		$query = "DELETE FROM letenka WHERE ID='".$_GET["hidden_lID"]."'";
 		$res = mysql_query($query, $conn);
+		$query="UPDATE let SET
+			mista='".mysql_real_escape_string($mista + 1)."'
+			WHERE ID='".$_GET["hidden_letID"]."';";
+		$result=mysql_query($query, $conn);
 	}
 	$_GET["menu"] = 2;
 }
@@ -61,26 +66,38 @@ if(isset($_POST["regZ"])){
 }
 //vytvoreni letenky
 if(isset($_GET["objednat"])){
-	$query="INSERT INTO letenka (cestujici_ID, let_ID) VALUES ('"
-		.mysql_real_escape_string($_SESSION['login'])."','"
-		.mysql_real_escape_string($_GET["hidden_ID"])."');";
-	$i = 0;
-	if(is_numeric($_GET["mnozstvi"])){
-		$quant = (int)$_GET["mnozstvi"];
-		if($quant <= 10){
-			while($i < $quant){
-				$result=mysql_query($query,$conn);
-				if(!($result)) echo "chyba";
-				$i = $i + 1;
-			}
+	$quant = (int)$_GET["mnozstvi"];
+	$mist = (int)$_GET["hidden_mista"];
+	$res = $mist - $quant;
+	if($res >= 0){
+		$query="INSERT INTO letenka (cestujici_ID, let_ID) VALUES ('"
+			.mysql_real_escape_string($_SESSION['login'])."','"
+			.mysql_real_escape_string($_GET["hidden_ID"])."');";
+		$i = 0;
+		if(is_numeric($_GET["mnozstvi"])){
+			global $quant, $res;
+			if($quant <= 10){
+				while($i < $quant){
+					$result=mysql_query($query,$conn);
+					if(!($result)) echo "chyba";
+					$i = $i + 1;
+				}
+				$query="UPDATE let SET
+					mista='".mysql_real_escape_string($res)."'
+					WHERE ID='".$_GET["hidden_ID"]."';";
+				$result=mysql_query($query, $conn);
 			
+			}
+			else{
+				?><script>alert("Maximalne lze objednat 10 letenek");</script><?
+			}
 		}
 		else{
-			?><script>alert("Maximalne lze objednat 10 letenek");</script><?
+			?><script>alert("Ciselna hodnota je vyzadovana");</script><?	
 		}
 	}
 	else{
-		?><script>alert("Ciselna hodnota je vyzadovana");</script><?	
+		?><script>alert("Prekrocena maximalni kapacita letadla");</script><?
 	}
 	$_GET["menu"] = 3;
 	
@@ -222,20 +239,29 @@ if(isset($_GET["removeL"])){
 }
 //vytvoreni letu
 if(isset($_POST["letka"])){
-	if(isset($_POST["LEz"]) && $_POST["LEz"] != "" && isset($_POST["LEkam"]) && $_POST["LEkam"] != "" && 
-	isset($_POST["LEdelka"]) && isset($_POST["gate1"]) && isset($_POST["LEdate"]) && isset($_POST["letadlo1"])){
-		$query = "INSERT INTO let (letadlo_ID, misto_odletu, misto_pristani, gate_ID, delka_letu, datum) VALUES ('"
-			.mysql_real_escape_string($_POST["letadlo1"])."','"
-			.mysql_real_escape_string($_POST["LEz"])."','"
-			.mysql_real_escape_string($_POST["LEkam"])."','"
-			.mysql_real_escape_string($_POST["gate1"])."','"
-			.mysql_real_escape_string($_POST["LEdelka"])."','"
-			.mysql_real_escape_string($_POST["LEdate"])."');";
-		unset($_POST["LEz"]);
-		unset($_POST["LEkam"]);
-		unset($_POST["LEdelka"]);
-		unset($_POST["LEdate"]);
-		$result = mysql_query($query, $conn);
+	if(isset($_POST["lmista"]) && $_POST["lmista"] != "" && isset($_POST["LEz"]) && $_POST["LEz"] != "" && 
+	isset($_POST["LEkam"]) && $_POST["LEkam"] != "" && isset($_POST["LEdelka"]) && isset($_POST["gate1"]) && 
+	isset($_POST["LEdate"]) && isset($_POST["letadlo1"])){
+		if(new DateTime() <= new DateTime($_POST["LEdate"])){
+			$query = "INSERT INTO let (mista, letadlo_ID, misto_odletu, misto_pristani,
+				gate_ID, delka_letu, datum) VALUES ('"
+				.mysql_real_escape_string($_POST["lmista"])."','"
+				.mysql_real_escape_string($_POST["letadlo1"])."','"
+				.mysql_real_escape_string($_POST["LEz"])."','"
+				.mysql_real_escape_string($_POST["LEkam"])."','"
+				.mysql_real_escape_string($_POST["gate1"])."','"
+				.mysql_real_escape_string($_POST["LEdelka"])."','"
+				.mysql_real_escape_string($_POST["LEdate"])."');";
+			unset($_POST["LEz"]);
+			unset($_POST["LEkam"]);
+			unset($_POST["LEdelka"]);
+			unset($_POST["LEdate"]);
+			unset($_POST["lmista"]);
+			$result = mysql_query($query, $conn);
+		}
+		else{
+			?><script>alert("Lety muzete planovat jen do budoucnosti");</script><?
+		}
 		
 	}
 	else{

@@ -1,6 +1,5 @@
 <?
-/*TODO 	- kapacita letadla
-	- zakazat planovat lety do minulosti
+/*TODO 	
 	- zakazat stornovat lety z minulosti
 */
 function main($menu, $conn){
@@ -106,9 +105,9 @@ function zakaz($menu,$conn){
 		<?break;
 
 		case 2:
-		$query = "select l.ID, le.datum, c.jmeno, c.prijmeni, le.misto_odletu as z, le.misto_pristani as do  
-		from letenka l,cestujici c, let le 
-		where c.ID = '".$_SESSION['login']."' and c.id = l.cestujici_ID and l.let_ID = le.ID;";
+		$query = "SELECT l.ID, le.datum, c.jmeno, c.prijmeni, le.misto_odletu as z, le.misto_pristani as do, le.mista as mista, le.ID as let_ID  
+		FROM letenka l,cestujici c, let le
+		WHERE c.ID = '".$_SESSION['login']."' AND c.id = l.cestujici_ID AND l.let_ID = le.ID;";
 
 		$res = mysql_query($query, $conn);
 		echo "<table border='0'>";
@@ -121,7 +120,12 @@ function zakaz($menu,$conn){
 						<td>Do: <?echo $data["do"];?></td>
 						<td>Datum: <?echo $data["datum"];?></td>
 						<input type="hidden" name="hidden_lID" value="<?php echo $data["ID"];?>">
-						<td><input type="submit" name="storno" value="Stornovat"></td></tr>
+						<input type="hidden" name="hidden_letID" value="<?php echo $data["let_ID"];?>">
+						<input type="hidden" name="hidden_mista" value="<?php echo $data["mista"];?>">
+						<?if(new DateTime($data["datum"]) >= new DateTime()){?>
+						<td><input type="submit" name="storno" value="Stornovat"></td>
+						<?}?>
+						</tr>
 					</div>
 				</form>
 			</div><?		
@@ -131,7 +135,11 @@ function zakaz($menu,$conn){
 		break;
 
 		case 3:
-		$query="SELECT * FROM gate, let WHERE let.gate_ID = gate.ID";
+		$query="SELECT g.oznaceni as oznaceni, l.misto_odletu as misto_odletu,
+		l.misto_pristani as misto_pristani, l.datum as datum, l.ID as ID, l.delka_letu as delka_letu, l.mista as mista
+		FROM gate g, let l
+		WHERE l.gate_ID = g.ID AND l.mista > 0 AND DATE(l.datum) >= DATE(NOW());";
+
 		$res=mysql_query($query,$conn);
 		echo "<table border='0'>";
 		echo "<tbody>";
@@ -146,7 +154,9 @@ function zakaz($menu,$conn){
 						<td>Brana: <?echo $data["oznaceni"];?></td>
 						<td><input type="text" name="mnozstvi" value="1"/></td>
 						<td><input type="hidden" name="hidden_ID" value="<?php echo $data["ID"];?>">
-						<td><input type="submit" name="objednat" value="Objednat"></td></tr>
+						<td><input type="hidden" name="hidden_mista" value="<?php echo $data["mista"];?>"></td>
+						<td><input type="submit" name="objednat" value="Objednat"></td>
+						<td>Pocet volnych mist: <?echo $data["mista"];?></td></tr>
 					</div>
 				</form>
 			</div><?
@@ -465,6 +475,7 @@ function zam($menu, $conn){
 				echo "</select>\n";
 				?>
 				</div></td></tr>
+				<tr><td><div><label>*Pocet mist:</label></td><td><input type="text" name="lmista" value="<?php if(isset($_POST["lmista"])) echo $_POST["lmista"];?>"/></div></td></tr>
 				<tr><td><div><label>Delka letu:</label></td><td><input type="text" name="LEdelka" value="<?php if(isset($_POST["LEdelka"])) echo $_POST["LEdelka"];?>"/></div></td></tr>
 				<tr><td><div><label>*Datum letu:</label></td><td><input type="date" name="LEdate" value ="<? echo date("Y-m-d") ?>"/></div></td></tr>
 				<tr><td></td><td><input type="submit" name="letka" value="Vytvorit"/></td></tr>
