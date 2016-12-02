@@ -1,4 +1,3 @@
-﻿
 <?
 //zobrazeni vsech lidi v db
 if(isset($_POST['ukaz_zakazniky'])){
@@ -350,5 +349,3 @@ if(isset($_POST["editA"])){
 	
 }
 ?>
-
-

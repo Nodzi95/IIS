@@ -12,14 +12,16 @@
 		?><script>window.location.href="index.php";</script><?
 	}
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
 <head>
-<meta charset="UTF-8">
-<title>Cestovni kancelar</title>
+<title>Cestovní kancelář</title>
+<link href="styly.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+<div id="wrapper">
+  <div id="header">
+		<h1>Letiště</h1>
+	</div>
 	<?
 	if(!isset($_GET["menu"])){
 		$_GET["menu"] = 0;	
@@ -86,10 +88,11 @@
 
 	
 ?>
-
-<footer>
-	Povinne pole jsou oznaceny *
-</footer>
-
+  </div>
+  <div id="footer">
+    Petr Nodžák, Martin Molek, Robin Vysloužil <br />
+    Projket do předmětu IIS na VUT Brno v akademickém roce 2016/2017 <br>
+  </div>
+</div>
 </BODY>
 </HTML>

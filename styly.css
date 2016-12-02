@@ -1,0 +1,33 @@
+* {margin: 0px; padding: 0px; }
+
+body {padding: 20px;  text-align: center; font-size: 14px; font-family: Georgia;}
+
+h1 {font-size: 66px; font-weight: normal; color:#D6156C; }
+h2 {font-size: 22px; padding: 0px 8px 8px 8px; }
+
+#wrapper {margin: 0px auto; padding: 0px 20px; text-align: left; width: 800px; overflow: auto; }
+#header {margin-bottom: 30px; border-bottom: 0px solid #444; padding-left: 10px; }
+
+#menu {margin-bottom: 20px; margin-right: 20px; font-size: 14px; float: left; }
+#menu a {margin-bottom: 1px; padding: 4px 10px; display:block; text-decoration: none; color: #000; background-color: #CACF43; }
+#menu a:hover {color: white; background-color: #0B8C8F}
+#menu ul {list-style: none; width:200px; }
+
+#content {margin-left: 220px; background-color: white; }
+#content a {color: #0B8C8F; }
+#content p {margin-bottom: 20px; text-align: justify; }
+#content p em {color: #444; }
+
+#footer {padding: 20px; text-align: center; border-top: 5px solid #444; clear: both; margin-top: 20px; font-size: 10px; }
+#footer a {color: #D6156C; }
+
+table {border: 0px; }
+thead td {font-weight: bold; }
+td {padding-right: 15px; }
+
+input {border: 1px solid #0B8C8F; width: 200px; }
+.thin {width: 20px; }
+input[type=submit] { width: 100px; background-color:#FCF8BC; border:1px solid #CACF43; cursor:pointer; padding: 0 4px; }
+input[type=submit]:hover {background-color:#0B8C8F; border:1px solid #0B8C8F;}
+input:placeholder-shown {border: 1px solid #D6156C; }
+
