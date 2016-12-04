@@ -33,30 +33,37 @@ if(isset($_POST["regZ"])){
 		isset($_POST["rjmeno"]) and 
 		isset($_POST["rprijmeni"]) and 
 		isset($_POST["rpas"]) and isset($_POST["rnaroz"])){
-
-		$query = "SELECT * FROM cestujici where login = '".$_POST["rlogin"]."'";
-		$res = mysql_query($query, $conn);
-		$data = mysql_fetch_array($res);
-		if($data["login"] == $_POST["rlogin"]){
-			?><script>alert("Tento login jiz nekdo pouziva");</script><?
+		if(strlen($_POST["rlogin"]) > 30 or strlen($_POST["rpass"]) > 30 or strlen($_POST["rjmeno"]) > 30 or
+		  strlen($_POST["rprijmeni"]) > 30 or strlen($_POST["rpas"]) > 20){
+			?><script>alert("Nektere pole presahuje povolenou delku vstupu");</script><?
 		}
 		else{
-		$query = "INSERT INTO cestujici (jmeno, prijmeni, login, pass, datum_narozeni,cislo_pasu, pozice) VALUES ('"
-			.mysql_real_escape_string($_POST["rjmeno"])."','"
-			.mysql_real_escape_string($_POST["rprijmeni"])."','"
-			.mysql_real_escape_string($_POST["rlogin"])."','"
-			.mysql_real_escape_string($_POST["rpass"])."','"
-			.mysql_real_escape_string($_POST["rnaroz"])."','"
-			.mysql_real_escape_string($_POST["rpas"])."', 0);";
+			$query = "SELECT * FROM cestujici where login = '".$_POST["rlogin"]."'";
+			$res = mysql_query($query, $conn);
+			$data = mysql_fetch_array($res);
+			if($data["login"] == $_POST["rlogin"]){
+				?><script>alert("Tento login jiz nekdo pouziva");</script><?
+			}
+			else{
+			$query = "INSERT INTO cestujici (jmeno, prijmeni, login, pass, datum_narozeni,cislo_pasu, pozice) VALUES ('"
+				.mysql_real_escape_string($_POST["rjmeno"])."','"
+				.mysql_real_escape_string($_POST["rprijmeni"])."','"
+				.mysql_real_escape_string($_POST["rlogin"])."','"
+				.mysql_real_escape_string($_POST["rpass"])."','"
+				.mysql_real_escape_string($_POST["rnaroz"])."','"
+				.mysql_real_escape_string($_POST["rpas"])."', 0);";
 
-		$result = mysql_query($query, $conn);
-		if(!($result)){?><script>alert("Udaje se nepodarilo pridat do db");</script><?}
-		?>
-				<script>
-					window.location.href="index.php";
-				</script>
-		<?
+			$result = mysql_query($query, $conn);
+			if(!($result)){
+				?><script>alert("Udaje se nepodarilo pridat do db");</script><?
+			}
+			?>
+					<script>
+						window.location.href="index.php";
+					</script>
+			<?
 
+			}
 		}
 	}else{
 		?><script>alert("Nevyplneny povinne udaje");</script><?
@@ -106,28 +113,34 @@ if(isset($_POST["regP"])){
 	if(isset($_POST["zlogin"]) and $_POST["zlogin"] != "" and 
 		isset($_POST["zpass"]) and $_POST["zpass"] != "" and 
 		isset($_POST["zjmeno"]) and isset($_POST["zprijmeni"])){
-		$query = "SELECT * FROM cestujici where login = '".$_POST["zlogin"]."'";
-		$res = mysql_query($query, $conn);
-		$data = mysql_fetch_array($res);
-		if($data["login"] == $_POST["zlogin"]){
-			?><script>alert("Tento login jiz nekdo pouziva");</script><?
+		if(strlen($_POST["zlogin"]) > 30 or strlen($_POST["zpass"]) > 30 or strlen($_POST["zjmeno"]) > 30 or
+		  strlen($_POST["zprijmeni"]) > 30){
+			?><script>alert("Nektere pole presahuje povolenou delku vstupu");</script><?
 		}
 		else{
-			$query = "INSERT INTO cestujici (jmeno, prijmeni, login, pass, pozice) VALUES ('"
-				.mysql_real_escape_string($_POST["zjmeno"])."','"
-				.mysql_real_escape_string($_POST["zprijmeni"])."','"
-				.mysql_real_escape_string($_POST["zlogin"])."','"
-				.mysql_real_escape_string($_POST["zpass"])."', 1);";
-
-			$result = mysql_query($query, $conn);
-			if(!($result)){
-				?><script>alert("Udaje se nepodarilo pridat do db");</script><?
+			$query = "SELECT * FROM cestujici where login = '".$_POST["zlogin"]."'";
+			$res = mysql_query($query, $conn);
+			$data = mysql_fetch_array($res);
+			if($data["login"] == $_POST["zlogin"]){
+				?><script>alert("Tento login jiz nekdo pouziva");</script><?
 			}
-			?>
-					<script>
-						window.location.href="index.php";
-					</script>
-			<?
+			else{
+				$query = "INSERT INTO cestujici (jmeno, prijmeni, login, pass, pozice) VALUES ('"
+					.mysql_real_escape_string($_POST["zjmeno"])."','"
+					.mysql_real_escape_string($_POST["zprijmeni"])."','"
+					.mysql_real_escape_string($_POST["zlogin"])."','"
+					.mysql_real_escape_string($_POST["zpass"])."', 1);";
+
+				$result = mysql_query($query, $conn);
+				if(!($result)){
+					?><script>alert("Udaje se nepodarilo pridat do db");</script><?
+				}
+				?>
+						<script>
+							window.location.href="index.php";
+						</script>
+				<?
+			}
 		}
 	}
 	else{
@@ -145,20 +158,23 @@ if(isset($_GET["removeZ"])){
 //vytvoreni terminalu
 if(isset($_POST["term"])){
 	if(isset($_POST["tnazev"]) && $_POST["tnazev"]!= ""){
-	
-		$query = "SELECT * FROM terminal where nazev = '".$_POST["tnazev"]."'";
-		$res = mysql_query($query, $conn);
-		$data = mysql_fetch_array($res);
-		if($data["nazev"] == $_POST["tnazev"]){
-			?><script>alert("Tento terminal jiz existuje");</script><?
+		if(strlen($_POST["tnazev"]) > 20){
+			?><script>alert("Nektere pole presahuje povolenou delku vstupu");</script><?
 		}
 		else{
-			$query = "INSERT INTO terminal (nazev) VALUES ('"
-				.mysql_real_escape_string($_POST["tnazev"])."');";
-
+			$query = "SELECT * FROM terminal where nazev = '".$_POST["tnazev"]."'";
+			$res = mysql_query($query, $conn);
+			$data = mysql_fetch_array($res);
+			if($data["nazev"] == $_POST["tnazev"]){
+				?><script>alert("Tento terminal jiz existuje");</script><?
+			}
+			else{
+				$query = "INSERT INTO terminal (nazev) VALUES ('"
+					.mysql_real_escape_string($_POST["tnazev"])."');";
+				unset($_POST["tnazev"]);
+				$result = mysql_query($query, $conn);
+			}
 		}
-		$result = mysql_query($query, $conn);
-		unset($_POST["tnazev"]);
 	}
 	else{
 		?><script>alert("Nevyplneny povinne udaje");</script><?
@@ -176,20 +192,24 @@ if(isset($_GET["removeT"])){
 //vytvoreni brany
 if(isset($_POST["gate"])){
 	if(isset($_POST["goznaceni"]) && $_POST["goznaceni"]!= "" && isset($_POST["terminal"])){
-		$query = "SELECT * FROM gate where oznaceni = '".$_POST["goznaceni"]."'";
-		$res = mysql_query($query, $conn);
-		$data = mysql_fetch_array($res);
-		if($data["oznaceni"] == $_POST["goznaceni"]){
-			?><script>alert("Tato brana jiz existuje");</script><?
+		if(strlen($_POST["goznaceni"]) > 20){
+			?><script>alert("Nektere pole presahuje povolenou delku vstupu");</script><?
 		}
 		else{
-			$query = "INSERT INTO gate (oznaceni, terminal_ID) VALUES ('"
-				.mysql_real_escape_string($_POST["goznaceni"])."','"
-				.mysql_real_escape_string($_POST["terminal"])."');";
-
+			$query = "SELECT * FROM gate where oznaceni = '".$_POST["goznaceni"]."'";
+			$res = mysql_query($query, $conn);
+			$data = mysql_fetch_array($res);
+			if($data["oznaceni"] == $_POST["goznaceni"]){
+				?><script>alert("Tato brana jiz existuje");</script><?
+			}
+			else{
+				$query = "INSERT INTO gate (oznaceni, terminal_ID) VALUES ('"
+					.mysql_real_escape_string($_POST["goznaceni"])."','"
+					.mysql_real_escape_string($_POST["terminal"])."');";
+				unset($_POST["goznaceni"]);
+				$result = mysql_query($query, $conn);
+			}
 		}
-		$result = mysql_query($query, $conn);
-		unset($_POST["goznaceni"]);
 	}
 	else{
 		?><script>alert("Nevyplneny povinne udaje");</script><?
@@ -207,21 +227,26 @@ if(isset($_GET["removeG"])){
 //vytvoreni letadla
 if(isset($_POST["letadlo"])){
 	if(isset($_POST["loznaceni"]) && $_POST["loznaceni"]!= "" && isset($_POST["lvyrobce"])){
-		$query = "SELECT * FROM letadlo where oznaceni = '".$_POST["loznaceni"]."'";
-		$res = mysql_query($query, $conn);
-		$data = mysql_fetch_array($res);
-		if($data["oznaceni"] == $_POST["loznaceni"]){
-			?><script>alert("Letadlo s timto oznacenim jiz existuje");</script><?
+		if(strlen($_POST["loznaceni"]) > 20 or strlen($_POST["lvyrobce"]) > 30){
+			?><script>alert("Nektere pole presahuje povolenou delku vstupu");</script><?
 		}
 		else{
-			$query = "INSERT INTO letadlo (oznaceni, typ_ID, vyrobce) VALUES ('"
-				.mysql_real_escape_string($_POST["loznaceni"])."','"
-				.mysql_real_escape_string($_POST["typ"])."','"
-				.mysql_real_escape_string($_POST["lvyrobce"])."');";
-			unset($_POST["loznaceni"]);
-			unset($_POST["lvyrobce"]);
+			$query = "SELECT * FROM letadlo where oznaceni = '".$_POST["loznaceni"]."'";
+			$res = mysql_query($query, $conn);
+			$data = mysql_fetch_array($res);
+			if($data["oznaceni"] == $_POST["loznaceni"]){
+				?><script>alert("Letadlo s timto oznacenim jiz existuje");</script><?
+			}
+			else{
+				$query = "INSERT INTO letadlo (oznaceni, typ_ID, vyrobce) VALUES ('"
+					.mysql_real_escape_string($_POST["loznaceni"])."','"
+					.mysql_real_escape_string($_POST["typ"])."','"
+					.mysql_real_escape_string($_POST["lvyrobce"])."');";
+				unset($_POST["loznaceni"]);
+				unset($_POST["lvyrobce"]);
+				$result = mysql_query($query, $conn);
+			}
 		}
-		$result = mysql_query($query, $conn);
 	}
 	else{
 		?><script>alert("Nevyplneny povinne udaje");</script><?
@@ -241,27 +266,32 @@ if(isset($_POST["letka"])){
 	if(isset($_POST["lmista"]) && $_POST["lmista"] != "" && isset($_POST["LEz"]) && $_POST["LEz"] != "" && 
 	isset($_POST["LEkam"]) && $_POST["LEkam"] != "" && isset($_POST["LEdelka"]) && isset($_POST["gate1"]) && 
 	isset($_POST["LEdate"]) && isset($_POST["letadlo1"])){
-		if(new DateTime() <= new DateTime($_POST["LEdate"])){
-			$query = "INSERT INTO let (mista, letadlo_ID, misto_odletu, misto_pristani,
-				gate_ID, delka_letu, datum) VALUES ('"
-				.mysql_real_escape_string($_POST["lmista"])."','"
-				.mysql_real_escape_string($_POST["letadlo1"])."','"
-				.mysql_real_escape_string($_POST["LEz"])."','"
-				.mysql_real_escape_string($_POST["LEkam"])."','"
-				.mysql_real_escape_string($_POST["gate1"])."','"
-				.mysql_real_escape_string($_POST["LEdelka"])."','"
-				.mysql_real_escape_string($_POST["LEdate"])."');";
-			unset($_POST["LEz"]);
-			unset($_POST["LEkam"]);
-			unset($_POST["LEdelka"]);
-			unset($_POST["LEdate"]);
-			unset($_POST["lmista"]);
-			$result = mysql_query($query, $conn);
+		if(strlen($_POST["lmista"]) > 5 or strlen($_POST["LEdelka"]) > 5 or 
+		   strlen($_POST["LEkam"]) > 40 or strlen($_POST["LEz"]) > 40){
+			?><script>alert("Nektere pole presahuje povolenou delku vstupu");</script><?
 		}
 		else{
-			?><script>alert("Lety muzete planovat jen do budoucnosti");</script><?
+			if(new DateTime() <= new DateTime($_POST["LEdate"])){
+				$query = "INSERT INTO let (mista, letadlo_ID, misto_odletu, misto_pristani,
+					gate_ID, delka_letu, datum) VALUES ('"
+					.mysql_real_escape_string($_POST["lmista"])."','"
+					.mysql_real_escape_string($_POST["letadlo1"])."','"
+					.mysql_real_escape_string($_POST["LEz"])."','"
+					.mysql_real_escape_string($_POST["LEkam"])."','"
+					.mysql_real_escape_string($_POST["gate1"])."','"
+					.mysql_real_escape_string($_POST["LEdelka"])."','"
+					.mysql_real_escape_string($_POST["LEdate"])."');";
+				unset($_POST["LEz"]);
+				unset($_POST["LEkam"]);
+				unset($_POST["LEdelka"]);
+				unset($_POST["LEdate"]);
+				unset($_POST["lmista"]);
+				$result = mysql_query($query, $conn);
+			}
+			else{
+				?><script>alert("Lety muzete planovat jen do budoucnosti");</script><?
+			}
 		}
-		
 	}
 	else{
 		?><script>alert("Nevyplneny povinne udaje");</script><?
@@ -298,54 +328,71 @@ if(isset($_POST["deleteA"])){
 }*/
 //editace zakaznika
 if(isset($_POST["editZ"])){
-	if($_POST["loginZE"] == ""){ ?><script>alert("Nemuzete smazat login");</script><?;}
-	else if($_POST["passZE"] == ""){ ?><script>alert("Nemuzete smazat heslo");</script><?;}
+	if(strlen($_POST["jmenoZE"]) > 30 or strlen($_POST["prijmeniZE"]) > 30 or 
+		   strlen($_POST["loginZE"]) > 30 or strlen($_POST["passZE"]) > 30 or  strlen($_POST["pasZE"]) > 20){
+			?><script>alert("Nektere pole presahuje povolenou delku vstupu");</script><?
+	}
 	else{
-		$query = "UPDATE cestujici SET
-			jmeno='".mysql_real_escape_string($_POST["jmenoZE"])."',
-			prijmeni='".mysql_real_escape_string($_POST["prijmeniZE"])."',
-			login='".mysql_real_escape_string($_POST["loginZE"])."',
-			pass='".mysql_real_escape_string($_POST["passZE"])."',
-			cislo_pasu='".mysql_real_escape_string($_POST["pasZE"])."'
-			WHERE ID='".$_SESSION["login"]."';";
-		$res = mysql_query($query, $conn);
-		?><script>alert("Vase udaje byly zmeneny");</script><?
-		$_GET["menu"]=4;
+		if($_POST["loginZE"] == ""){ ?><script>alert("Nemuzete smazat login");</script><?;}
+		else if($_POST["passZE"] == ""){ ?><script>alert("Nemuzete smazat heslo");</script><?;}
+		else{
+			$query = "UPDATE cestujici SET
+				jmeno='".mysql_real_escape_string($_POST["jmenoZE"])."',
+				prijmeni='".mysql_real_escape_string($_POST["prijmeniZE"])."',
+				login='".mysql_real_escape_string($_POST["loginZE"])."',
+				pass='".mysql_real_escape_string($_POST["passZE"])."',
+				cislo_pasu='".mysql_real_escape_string($_POST["pasZE"])."'
+				WHERE ID='".$_SESSION["login"]."';";
+			$res = mysql_query($query, $conn);
+			?><script>alert("Vase udaje byly zmeneny");</script><?
+			$_GET["menu"]=4;
+		}
 	}
 	
 }
 //editace zamestnance
 if(isset($_POST["editP"])){
-	if($_POST["loginE"] == ""){ ?><script>alert("Nemuzete smazat login");</script><?;}
-	else if($_POST["passE"] == ""){ ?><script>alert("Nemuzete smazat heslo");</script><?;}
+	if(strlen($_POST["jmenoE"]) > 30 or strlen($_POST["prijmeniE"]) > 30 or 
+		   strlen($_POST["loginE"]) > 30 or strlen($_POST["passE"]) > 30){
+			?><script>alert("Nektere pole presahuje povolenou delku vstupu");</script><?
+	}
 	else{
-		$query = "UPDATE cestujici SET
-			jmeno='".mysql_real_escape_string($_POST["jmenoE"])."',
-			prijmeni='".mysql_real_escape_string($_POST["prijmeniE"])."',
-			login='".mysql_real_escape_string($_POST["loginE"])."',
-			pass='".mysql_real_escape_string($_POST["passE"])."'
-			WHERE ID='".$_SESSION["zam"]."';";
-		$res = mysql_query($query, $conn);
-		?><script>alert("Vase udaje byly zmeneny");</script><?
-		$_GET["menu"]=6;
+		if($_POST["loginE"] == ""){ ?><script>alert("Nemuzete smazat login");</script><?;}
+		else if($_POST["passE"] == ""){ ?><script>alert("Nemuzete smazat heslo");</script><?;}
+		else{
+			$query = "UPDATE cestujici SET
+				jmeno='".mysql_real_escape_string($_POST["jmenoE"])."',
+				prijmeni='".mysql_real_escape_string($_POST["prijmeniE"])."',
+				login='".mysql_real_escape_string($_POST["loginE"])."',
+				pass='".mysql_real_escape_string($_POST["passE"])."'
+				WHERE ID='".$_SESSION["zam"]."';";
+			$res = mysql_query($query, $conn);
+			?><script>alert("Vase udaje byly zmeneny");</script><?
+			$_GET["menu"]=6;
+		}
 	}
 	
 }
 //editace admina
 if(isset($_POST["editA"])){
-	if($_POST["loginA"] == ""){ ?><script>alert("Nemuzete smazat login");</script><?;}
-	else if($_POST["passA"] == ""){ ?><script>alert("Nemuzete smazat heslo");</script><?;}
-	else{
-		$query = "UPDATE cestujici SET
-			jmeno='".mysql_real_escape_string($_POST["jmenoA"])."',
-			prijmeni='".mysql_real_escape_string($_POST["prijmeniA"])."',
-			login='".mysql_real_escape_string($_POST["loginA"])."',
-			pass='".mysql_real_escape_string($_POST["passA"])."'
-			WHERE ID='".$_SESSION["admin"]."';";
-		$res = mysql_query($query, $conn);
-		?><script>alert("Vase udaje byly zmeneny");</script><?
-		$_GET["menu"]=10;
+	if(strlen($_POST["jmenoA"]) > 30 or strlen($_POST["prijmeniA"]) > 30 or 
+		   strlen($_POST["loginA"]) > 30 or strlen($_POST["passA"]) > 30){
+			?><script>alert("Nektere pole presahuje povolenou delku vstupu");</script><?
 	}
-	
+	else{
+		if($_POST["loginA"] == ""){ ?><script>alert("Nemuzete smazat login");</script><?;}
+		else if($_POST["passA"] == ""){ ?><script>alert("Nemuzete smazat heslo");</script><?;}
+		else{
+			$query = "UPDATE cestujici SET
+				jmeno='".mysql_real_escape_string($_POST["jmenoA"])."',
+				prijmeni='".mysql_real_escape_string($_POST["prijmeniA"])."',
+				login='".mysql_real_escape_string($_POST["loginA"])."',
+				pass='".mysql_real_escape_string($_POST["passA"])."'
+				WHERE ID='".$_SESSION["admin"]."';";
+			$res = mysql_query($query, $conn);
+			?><script>alert("Vase udaje byly zmeneny");</script><?
+			$_GET["menu"]=10;
+		}
+	}
 }
 ?>
