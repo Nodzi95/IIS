@@ -6,7 +6,7 @@ function main($menu, $conn){
 ?>	<div id="menu">
 		<ul>
 			<li><a href="?menu=0">Domů</a></li>
-			<li><a href="?menu=1">Letenky</a></li>
+			<?//<li><a href="?menu=1">Letenky</a></li>?>
 			<li><a href="?menu=2">Kontakt</a></li>
 			<li><a href="?menu=3">Přihlášení</a></li>
 			<li><a href="?menu=4">Registrace</a></li>		
@@ -17,7 +17,7 @@ function main($menu, $conn){
 switch($menu){
 	case 0:?>
 			<p>
-				<span>Vítejte v cestovní kancéláři "název"</span>
+				<span>Vítejte v cestovní kancéláři</span>
 			</p>		
 	<?break;
 	case 1:?>
