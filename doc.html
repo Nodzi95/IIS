@@ -13,54 +13,54 @@
 <body>
 
 
-<h1>Leti¹tì</h1> 
+<h1>LetiÅ¡tÄ›</h1> 
 
 <dl>
-	<dt>Autoøi</dt>
-	<dd>Petr Nod¾ák 
+	<dt>AutoÅ™i</dt>
+	<dd>Petr NodÅ¾Ã¡k 
 	    <a href="mailto:xnodza00@stud.fit.vutbr.cz">xnodza00@stud.fit.vutbr.cz</a> -
-		správa u¾ivatelù a databázovı subsystém
+		sprÃ¡va uÅ¾ivatelÅ¯ a databÃ¡zovÃ½ subsystÃ©m
 	</dd>
 	<dd>Martin Molek 
 	    <a href="mailto:xmolek00@stud.fit.vutbr.cz">xmolek00@stud.fit.vutbr.cz</a> - 
-		u¾ivatelské rozhraní a databázovı subsystém
+		uÅ¾ivatelskÃ© rozhranÃ­ a databÃ¡zovÃ½ subsystÃ©m
 	</dd>
-	<dd>Robin Vyslou¾il 
+	<dd>Robin VyslouÅ¾il 
 	    <a href="mailto:xvyslo05@stud.fit.vutbr.cz">xvyslo05@stud.fit.vutbr.cz</a> - 
-		testování kvality
+		testovÃ¡nÃ­ kvality
 	</dd>
 	<dt>URL aplikace</dt>
 	<dd><a href="http://www.stud.fit.vutbr.cz/~xnodza00/xnodza00/">http://www.stud.fit.vutbr.cz/~xnodza00/xnodza00/</a></dd>
 </dl>
 
-<h2>U¾ivatelé systému pro testování</h2>
+<h2>UÅ¾ivatelÃ© systÃ©mu pro testovÃ¡nÃ­</h2>
 <table>
 <tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
-<tr><td>nodzi</td><td>nn</td><td>Administrátor</td></tr>
-<tr><td>zam</td><td>zam</td><td>Zamìstnanec</td></tr>
-<tr><td>pet</td><td>123</td><td>Zákazník</td></tr>
+<tr><td>nodzi</td><td>nn</td><td>AdministrÃ¡tor</td></tr>
+<tr><td>zam</td><td>zam</td><td>ZamÄ›stnanec</td></tr>
+<tr><td>pet</td><td>123</td><td>ZÃ¡kaznÃ­k</td></tr>
 </table>
 
 <h2>Implementace</h2>
-<p>Ve¹keré vykreslování html kontrukcí se provádí v souboru <i>stranky.php</i> voláním rùznıch funkcí. Vìt¹ina dotazù na databázi se provádí v souboru <i>select.php</i>, nìkteré (napø. pro zobrazování dat z databáze na stránku) jsou implementovány v souboru <i>stranky.php</i>.</p>
-<h3>Úvodní menu</h3>
-<p>Úvodní menu je øe¹eno voláním funkce <i>function main</i>, která vykresluje stránky, pokud není nikdo pøihlá¹en. Zde se dá pøihlásit do systému, registrovat nebo zjistit informace o firmì.</p>
+<p>VeÅ¡kerÃ© vykreslovÃ¡nÃ­ html kontrukcÃ­ se provÃ¡dÃ­ v souboru <i>stranky.php</i> volÃ¡nÃ­m rÅ¯znÃ½ch funkcÃ­. VÄ›tÅ¡ina dotazÅ¯ na databÃ¡zi se provÃ¡dÃ­ v souboru <i>select.php</i>, nÄ›kterÃ© (napÅ™. pro zobrazovÃ¡nÃ­ dat z databÃ¡ze na strÃ¡nku) jsou implementovÃ¡ny v souboru <i>stranky.php</i>.</p>
+<h3>ÃšvodnÃ­ menu</h3>
+<p>ÃšvodnÃ­ menu je Å™eÅ¡eno volÃ¡nÃ­m funkce <i>function main</i>, kterÃ¡ vykresluje strÃ¡nky, pokud nenÃ­ nikdo pÅ™ihlÃ¡Å¡en. Zde se dÃ¡ pÅ™ihlÃ¡sit do systÃ©mu, registrovat nebo zjistit informace o firmÄ›.</p>
 <h3>Admin</h3>
-<p>Pokud se pøihlásí administrátor (kterı vznikne pouze tak, ¾e se "natvrdo pøidá" do databáze) je volána funkce <i>function admin</i>, kde je implementován pøípad u¾ití pro vytvoøení a smazání <i>zamìstnance</i>, <i>gate</i>, <i>letadla</i> a <i>terminálu</i>. Navíc je umo¾nìno administrátorovi, aby si editovat svùj profil (jméno, pøíjmení, login a heslo). Z diagramu pøípadu u¾ití byly pro administrátora vynechány tyto mo¾nosti: editovat gate, terminal, letadlo a zrevidovat letadlo, jeliko¾ by to implementaènì neznamenalo nic nového, jen opakování stejného postupu jak u editování profilu.</p>
-<h3>Zamìstnanec</h3>
-<p>Pøi pøihlá¹eí jako zamìstnanec (zamìstnanec vznikne jen tak, ¾e ho vytvoøí administrátor) se volá funkce <i>function zam</i>, kde jsou implementovány pøipady u¾ití <i>vytvoøení letu</i>, <i>smazání letu</i> a stejnì jak administrátor si mù¾e editovat/smazat profil. Zamìstnanec mù¾e plánovat lety jen do budoucnosti (zítra a dál).</p>
-<h3>Zákazník</h3>
-<p>Jako poslední se jde pøihlásit jako zákazník (vznikne registrací v úvodním menu), zde si mù¾e zákazník objednat nebo stornovat letenky, dále si mù¾e editovat/smazat úèet. U¾ivatel mù¾e stornovat jen letenky na let, kterı se uskuteèní v budoucnosti (zítra a dál).</p>
+<p>Pokud se pÅ™ihlÃ¡sÃ­ administrÃ¡tor (kterÃ½ vznikne pouze tak, Å¾e se "natvrdo pÅ™idÃ¡" do databÃ¡ze) je volÃ¡na funkce <i>function admin</i>, kde je implementovÃ¡n pÅ™Ã­pad uÅ¾itÃ­ pro vytvoÅ™enÃ­ a smazÃ¡nÃ­ <i>zamÄ›stnance</i>, <i>gate</i>, <i>letadla</i> a <i>terminÃ¡lu</i>. NavÃ­c je umoÅ¾nÄ›no administrÃ¡torovi, aby si editovat svÅ¯j profil (jmÃ©no, pÅ™Ã­jmenÃ­, login a heslo). Z diagramu pÅ™Ã­padu uÅ¾itÃ­ byly pro administrÃ¡tora vynechÃ¡ny tyto moÅ¾nosti: editovat gate, terminal, letadlo a zrevidovat letadlo, jelikoÅ¾ by to implementaÄnÄ› neznamenalo nic novÃ©ho, jen opakovÃ¡nÃ­ stejnÃ©ho postupu jak u editovÃ¡nÃ­ profilu.</p>
+<h3>ZamÄ›stnanec</h3>
+<p>PÅ™i pÅ™ihlÃ¡Å¡enÃ­ jako zamÄ›stnanec (zamÄ›stnanec vznikne jen tak, Å¾e ho vytvoÅ™Ã­ administrÃ¡tor) se volÃ¡ funkce <i>function zam</i>, kde jsou implementovÃ¡ny pÅ™ipady uÅ¾itÃ­ <i>vytvoÅ™enÃ­ letu</i>, <i>smazÃ¡nÃ­ letu</i> a stejnÄ› jak administrÃ¡tor si mÅ¯Å¾e editovat/smazat profil. ZamÄ›stnanec mÅ¯Å¾e plÃ¡novat lety jen do budoucnosti (zÃ­tra a dÃ¡l).</p>
+<h3>ZÃ¡kaznÃ­k</h3>
+<p>Jako poslednÃ­ se jde pÅ™ihlÃ¡sit jako zÃ¡kaznÃ­k (vznikne registracÃ­ v ÃºvodnÃ­m menu), zde si mÅ¯Å¾e zÃ¡kaznÃ­k objednat nebo stornovat letenky, dÃ¡le si mÅ¯Å¾e editovat/smazat ÃºÄet. UÅ¾ivatel mÅ¯Å¾e stornovat jen letenky na let, kterÃ½ se uskuteÄnÃ­ v budoucnosti (zÃ­tra a dÃ¡l).</p>
 
 <h2>Instalace</h2>
 <ul>
-<li>Na server není tøeba nic instalovat</li>
-<li>Informaèní systém byl vyvíjen a testován na PHP 5.6.25 (¹kolní server eva) a prohlí¾eèi Chrome </li>
-<li>Script by se mìl sám pøihlásit k existující databázi</li>
+<li>Na server nenÃ­ tÅ™eba nic instalovat</li>
+<li>InformaÄnÃ­ systÃ©m byl vyvÃ­jen a testovÃ¡n na PHP 5.6.25 (Å¡kolnÃ­ server eva) a prohlÃ­Å¾eÄi Chrome </li>
+<li>Script by se mÄ›l sÃ¡m pÅ™ihlÃ¡sit k existujÃ­cÃ­ databÃ¡zi</li>
 </ul>
 
-<h2>Známé problémy</h2>
-<p>Nìkteré pøipady u¾ití byli vynechány, jeliko¾ se implementaènì u¾ jen opakovali.</p>
+<h2>ZnÃ¡mÃ© problÃ©my</h2>
+<p>NÄ›kterÃ© pÅ™ipady uÅ¾itÃ­ byli vynechÃ¡ny, jelikoÅ¾ se implementaÄnÄ› uÅ¾ jen opakovali.</p>
 
 </body>
 </html>
