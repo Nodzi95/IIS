@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2"/>
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+
+<h1>Letiště</h1> 
+
+<dl>
+	<dt>Autoři</dt>
+	<dd>Petr Nodžák 
+	    <a href="mailto:xnodza00@stud.fit.vutbr.cz">xnodza00@stud.fit.vutbr.cz</a> -
+		správa uživatelů a databázový subsystém
+	</dd>
+	<dd>Martin Molek 
+	    <a href="mailto:xmolek00@stud.fit.vutbr.cz">xmolek00@stud.fit.vutbr.cz</a> - 
+		uživatelské rozhraní a databázový subsystém
+	</dd>
+	<dd>Robin Vysloužil 
+	    <a href="mailto:xvyslo05@stud.fit.vutbr.cz">xvyslo05@stud.fit.vutbr.cz</a> - 
+		testování kvality
+	</dd>
+	<dt>URL aplikace</dt>
+	<dd><a href="http://www.stud.fit.vutbr.cz/~xnodza00/xnodza00/">http://www.stud.fit.vutbr.cz/~xnodza00/xnodza00/</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<table>
+<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>nodzi</td><td>nn</td><td>Administrátor</td></tr>
+<tr><td>zam</td><td>zam</td><td>Zaměstnanec</td></tr>
+<tr><td>pet</td><td>123</td><td>Zákazník</td></tr>
+</table>
+
+<h2>Implementace</h2>
+<p>Veškeré vykreslování html kontrukcí se provádí v souboru <i>stranky.php</i> voláním různých funkcí. Většina dotazů na databázi se provádí v souboru <i>select.php</i>, některé (např. pro zobrazování dat z databáze na stránku) jsou implementovány v souboru <i>stranky.php</i>.</p>
+<h3>Úvodní menu</h3>
+<p>Úvodní menu je řešeno voláním funkce <i>function main</i>, která vykresluje stránky, pokud není nikdo přihlášen. Zde se dá přihlásit do systému, registrovat nebo zjistit informace o firmě.</p>
+<h3>Admin</h3>
+<p>Pokud se přihlásí administrátor (který vznikne pouze tak, že se "natvrdo přidá" do databáze) je volána funkce <i>function admin</i>, kde je implementován případ užití pro vytvoření a smazání <i>zaměstnance</i>, <i>gate</i>, <i>letadla</i> a <i>terminálu</i>. Navíc je umožněno administrátorovi, aby si editovat svůj profil (jméno, příjmení, login a heslo). Z diagramu případu užití byly pro administrátora vynechány tyto možnosti: editovat gate, terminal, letadlo a zrevidovat letadlo, jelikož by to implementačně neznamenalo nic nového, jen opakování stejného postupu jak u editování profilu.</p>
+<h3>Zaměstnanec</h3>
+<p>Při přihlášeí jako zaměstnanec (zaměstnanec vznikne jen tak, že ho vytvoří administrátor) se volá funkce <i>function zam</i>, kde jsou implementovány připady užití <i>vytvoření letu</i>, <i>smazání letu</i> a stejně jak administrátor si může editovat/smazat profil. Zaměstnanec může plánovat lety jen do budoucnosti (zítra a dál).</p>
+<h3>Zákazník</h3>
+<p>Jako poslední se jde přihlásit jako zákazník (vznikne registrací v úvodním menu), zde si může zákazník objednat nebo stornovat letenky, dále si může editovat/smazat účet. Uživatel může stornovat jen letenky na let, který se uskuteční v budoucnosti (zítra a dál).</p>
+
+<h2>Instalace</h2>
+<ul>
+<li>Na server není třeba nic instalovat</li>
+<li>Informační systém byl vyvíjen a testován na PHP 5.6.25 (školní server eva) a prohlížeči Chrome </li>
+<li>Script by se měl sám přihlásit k existující databázi</li>
+</ul>
+
+<h2>Známé problémy</h2>
+<p>Některé připady užití byli vynechány, jelikož se implementačně už jen opakovali.</p>
+
+</body>
+</html>
